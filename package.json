@@ -12,6 +12,10 @@
     "css-modules"
   ],
   "author": "Kai Hao",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevin940726/svgo-plugin-css-modules.git"
+  },
   "license": "MIT",
   "dependencies": {
     "css": "^2.2.1",
