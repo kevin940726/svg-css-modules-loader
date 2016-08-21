@@ -1,6 +1,6 @@
 {
   "name": "svgo-plugin-css-modules",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "svgo plugin to apply css-modules to svg style element",
   "main": "index.js",
   "scripts": {
