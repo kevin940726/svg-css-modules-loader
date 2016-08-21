@@ -11,7 +11,8 @@ var generate = genericNames('[name]__[local]___[hash:base64:5]', {
 
 var cssProcessor = postcss([
   postcssModules({
-    generateScopedName: '[name]__[local]___[hash:base64:5]'
+    generateScopedName: '[name]__[local]___[hash:base64:5]',
+    getJSON: function () {}
   })
 ])
 
