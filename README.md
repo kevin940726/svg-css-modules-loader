@@ -1,2 +1,50 @@
-# svgo-plugin-css-modules
-svgo plugin to apply css-modules to svg style element
+# svg-css-modules-loader
+Webpack loader to transform svg css modules.
+
+## Motivation
+Inline svg is awesome, it let you control your svg with css on the fly. Using a loader like `svg-react-loader` let you quickly import your svg as inline React component. But what happen if your svg file has some css style in it? This is a very common thing when you are exporting svg from **sketch** or other application. Now importing multiple svg files will cause some class name collision issues, and it is a pain in the ass. So, css modules to the rescue.
+
+**tl;dr**
+```html
+/* from ... */
+/* file.svg */
+<svg>
+	<defs><style>
+	.class {
+		fill: #fff;
+	}
+	</style></defs>
+	<path class="class" />
+</svg>
+
+/* ... to */
+<svg>
+	<defs><style>
+	.file__class___DhpID {
+		fill: #fff;
+	}
+	</style></defs>
+	<path class="file__class___DhpID" />
+</svg>
+```
+
+## Installation
+```bash
+$ npm install --save-dev svg-css-modules-loader
+```
+
+## Usage
+Load the loader before the `svg-react-loader` or other loader like below.
+```js
+loaders: [
+	//... other loaders
+	{
+		test: /\.svg$/,
+		loader: 'svg-react!svg-css-modules'
+	},
+	//... other loaders
+]
+```
+
+## License
+MIT
