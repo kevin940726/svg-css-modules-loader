@@ -18,7 +18,7 @@ test('it should correctly add prefix class name to svg style', function (t) {
       t.truthy(className)
       t.is(
         root.content[0].content[0].content[0].content[0].text,
-        '.' + className + '.a{fill:#fff;}'
+        '.' + className + ' .a{fill:#fff;}'
       )
     })
   })

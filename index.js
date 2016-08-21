@@ -37,7 +37,7 @@ exports.fn = function (item) {
           AST.stylesheet.rules.forEach(function (rule) {
             if (rule.type === 'rule' && rule.selectors) {
               rule.selectors = rule.selectors.map(function (selector) {
-                return '.' + prefix + selector
+                return '.' + prefix + ' ' + selector
               })
             }
           })
