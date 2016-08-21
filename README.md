@@ -1,6 +1,8 @@
 # svg-css-modules-loader
 Webpack loader to transform svg css modules.
 
+[![NPM](https://nodei.co/npm/svg-css-modules-loader.png?downloads=true&stars=true)](https://nodei.co/npm/svg-css-modules-loader/)
+
 ## Motivation
 Inline svg is awesome, it let you control your svg with css on the fly. Using a loader like `svg-react-loader` let you quickly import your svg as inline React component. But what happen if your svg file has some css style in it? This is a very common thing when you are exporting svg from **sketch** or other application. Now importing multiple svg files will cause some class name collision issues, and it is a pain in the ass. So, css modules to the rescue.
 
