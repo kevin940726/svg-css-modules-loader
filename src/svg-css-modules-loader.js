@@ -35,7 +35,11 @@ module.exports = function (source) {
     .then(function (result) {
       $('style').text(result.css)
 
-      callback(null, $.xml().replace(/viewbox=/gm, 'viewBox='))
+      var final = $.xml()
+        .replace(/viewbox=/gm, 'viewBox=')
+        .replace(/(<\/?clip)path/gm, '$1Path')
+
+      callback(null, final)
     })
     .catch(function (err) {
       callback(err)
