@@ -1,0 +1,15 @@
+<svg>
+	<defs>
+		<style>
+			.a {fill: #fff;}
+			.a, .b {stroke: #000;}
+		</style>
+		<style>
+			.d {fill: #fff;}
+			.d.b {stroke: #000;}
+		</style>
+	</defs>
+	<g class="a">
+		<path class="a b"></path>
+	</g>
+</svg>

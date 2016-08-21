@@ -1,31 +1,37 @@
 {
-  "name": "svgo-plugin-css-modules",
-  "version": "0.1.1",
-  "description": "svgo plugin to apply css-modules to svg style element",
-  "main": "index.js",
+  "name": "svgo-css-modules-loader",
+  "version": "1.0.0",
+  "description": "webpack loader to transform svg css modules",
+  "main": "src/svg-css-modules-loader.js",
   "scripts": {
-    "test": "ava",
+    "test": "webpack --config test/webpack.config.js && ava test/test.js",
     "lint": "standard"
   },
   "keywords": [
-    "svgo",
+    "webpack",
+    "loader",
+    "svg",
     "css-modules"
   ],
   "author": "Kai Hao",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kevin940726/svgo-plugin-css-modules.git"
+    "url": "https://github.com/kevin940726/svg-css-modules-loader.git"
   },
   "license": "MIT",
   "dependencies": {
-    "css": "^2.2.1",
-    "shortid": "^2.2.6"
+    "cheerio": "^0.20.0",
+    "generic-names": "^1.0.1",
+    "postcss": "^5.1.2",
+    "postcss-modules": "^0.5.2"
   },
   "peerDependencies": {
-    "svgo": ">= 0.4.2"
+    "webpack": ">= 1.0.0"
   },
   "devDependencies": {
     "ava": "^0.16.0",
+    "cheerio": "^0.20.0",
+    "file-loader": "^0.9.0",
     "standard": "^8.0.0-beta.5"
   }
 }

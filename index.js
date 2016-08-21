@@ -1,14 +1,13 @@
 var css = require('css')
 var shortid = require('shortid')
-
-exports.type = 'perItem'
-
-exports.active = true
+var genericNames = require('generic-names')
 
 // generate a short hash id without duplicate
 var prefix = shortid.generate()
 
-exports.fn = function (item) {
+var fn = function (item) {
+  var path = this.path
+
   if (item.elem) {
     if (item.isElem('svg')) {
       // add prefix to svg class
@@ -37,7 +36,7 @@ exports.fn = function (item) {
           AST.stylesheet.rules.forEach(function (rule) {
             if (rule.type === 'rule' && rule.selectors) {
               rule.selectors = rule.selectors.map(function (selector) {
-                return '.' + prefix + ' ' + selector
+                return '.' + path + ' ' + selector
               })
             }
           })
@@ -52,4 +51,13 @@ exports.fn = function (item) {
   }
 
   return item
+}
+
+module.exports = function (path) {
+  return {
+    path: path,
+    type: 'perItem',
+    active: true,
+    fn: fn
+  }
 }
