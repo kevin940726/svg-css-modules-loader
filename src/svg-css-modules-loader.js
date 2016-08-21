@@ -20,7 +20,7 @@ module.exports = function (source) {
   var callback = this.async()
   var path = this.resourcePath
 
-  var $ = cheerio.load(source)
+  var $ = cheerio.load(source, { lowerCaseAttributeNames: false })
 
   $('*[class]:not(svg)').attr('class', function () {
     return $(this).attr('class')
@@ -35,11 +35,7 @@ module.exports = function (source) {
     .then(function (result) {
       $('style').text(result.css)
 
-      var final = $.xml()
-        .replace(/viewbox=/gm, 'viewBox=')
-        .replace(/(<\/?clip)path/gm, '$1Path')
-
-      callback(null, final)
+      callback(null, $.xml())
     })
     .catch(function (err) {
       callback(err)
