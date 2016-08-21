@@ -4,6 +4,7 @@ var cheerio = require('cheerio')
 var genericNames = require('generic-names')
 var postcss = require('postcss')
 var postcssModules = require('postcss-modules')
+var postcssUrl = require('postcss-url')
 
 var generate = genericNames('[name]__[local]___[hash:base64:5]', {
   context: process.cwd()
@@ -14,9 +15,12 @@ var cssProcessor = postcss([
     generateScopedName: '[name]__[local]___[hash:base64:5]',
     getJSON: function () {}
   })
-])
+]).use(postcssUrl({
+  url: 'rebase'
+}))
 
 module.exports = function (source) {
+  this.cacheable && this.cacheable()
   var callback = this.async()
   var path = this.resourcePath
 
