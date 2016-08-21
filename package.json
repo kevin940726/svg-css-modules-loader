@@ -1,5 +1,5 @@
 {
-  "name": "svgo-css-modules-loader",
+  "name": "svg-css-modules-loader",
   "version": "1.0.0",
   "description": "webpack loader to transform svg css modules",
   "main": "src/svg-css-modules-loader.js",
