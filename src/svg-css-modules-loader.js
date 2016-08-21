@@ -20,7 +20,10 @@ module.exports = function (source) {
   var callback = this.async()
   var path = this.resourcePath
 
-  var $ = cheerio.load(source, { lowerCaseAttributeNames: false })
+  var $ = cheerio.load(source, {
+    xmlMode: true,
+    lowerCaseAttributeNames: false
+  })
 
   $('*[class]:not(svg)').attr('class', function () {
     return $(this).attr('class')
