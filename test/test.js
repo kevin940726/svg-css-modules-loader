@@ -10,12 +10,14 @@ test('it should correctly transform source to css-modules', function (t) {
   var module = {
     resourcePath: path.join(__dirname, 'test.svg'),
     getJSON: function () {},
-    callback: function (err, result) {
-      if (err) {
-        throw err
-      }
+    async: function () {
+      return function (err, result) {
+        if (err) {
+          throw err
+        }
 
-      t.is(result, expected)
+        t.is(result, expected)
+      }
     }
   }
 

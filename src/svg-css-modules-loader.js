@@ -17,7 +17,7 @@ var cssProcessor = postcss([
 ])
 
 module.exports = function (source) {
-  var callback = this.callback
+  var callback = this.async()
   var path = this.resourcePath
 
   var $ = cheerio.load(source)
@@ -36,5 +36,8 @@ module.exports = function (source) {
       $('style').text(result.css)
 
       callback(null, $.html())
+    })
+    .catch(function (err) {
+      callback(err)
     })
 }
