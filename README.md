@@ -38,7 +38,7 @@ $ npm install --save-dev svg-css-modules-loader
 ```
 
 ## Usage
-Load the loader before the `svg-react-loader` or other loader like below.
+Load the loader before the [svg-react-loader](https://github.com/jhamlet/svg-react-loader) or other loader like below.
 ```js
 loaders: [
 	//... other loaders
@@ -48,6 +48,12 @@ loaders: [
 	},
 	//... other loaders
 ]
+```
+
+It's also highly recommended to include [svgo](https://github.com/svg/svgo) in your loaders by using [svgo-loader](https://github.com/rpominov/svgo-loader) or [image-webpack-loader](https://github.com/tcoopman/image-webpack-loader)
+
+```js
+loader: 'svg-react!svgo!svg-css-modules'
 ```
 
 ## License
