@@ -1,1 +1,1 @@
-module.exports = require('./test.svg')
+require('./test.svg')

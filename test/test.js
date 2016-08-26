@@ -10,7 +10,7 @@ const generate = genericNames('[name]__[local]___[hash:base64:5]', {
 
 const PATH = path.join(__dirname, 'test.svg')
 
-const callTest = (t) => (source, expected) => {
+const callTest = (t, source, expected) => {
   const module = {
     resourcePath: PATH,
     async: () => (err, result) => {
@@ -19,6 +19,7 @@ const callTest = (t) => (source, expected) => {
       }
 
       t.is(result, expected)
+      t.end()
     }
   }
 
@@ -26,30 +27,29 @@ const callTest = (t) => (source, expected) => {
 }
 
 test('it should correctly transform source to css-modules', t => {
-  const source = fs.readFileSync('./test.svg', 'utf8')
-  const expected = require('./bundle')
+  const expected = fs.readFileSync('./result.svg', 'utf8')
 
-  callTest(t)(source, expected)
+  t.truthy(expected)
 })
 
-test('it should handle camelCase attributes and tags in xmlMode', t => {
+test.cb('it should handle camelCase attributes and tags in xmlMode', t => {
   const source = '<svg viewBox="0 0 100 100"><clipPath></clipPath></svg>'
-  const expected = source
+  const expected = '<svg viewBox="0 0 100 100"><clipPath/></svg>'
 
-  callTest(t)(source, expected)
+  callTest(t, source, expected)
 })
 
-test('it should transform id to css-modules', t => {
+test.cb('it should transform id to css-modules', t => {
   const id = 'a'
   const expectedId = generate(id, PATH)
   const source = '<svg><defs><style>#a{fill:none;}</style></defs><path id="a"/></svg>'
   const expected = `<svg><defs><style>#${expectedId}{fill:none;}</style></defs><path id="${expectedId}"/></svg>`
 
-  callTest(t)(source, expected)
+  callTest(t, source, expected)
 })
 
 {
-  const macro = (t, input, expect) => callTest(t)(input, expect)
+  const macro = callTest
   macro.title = (providedTitle, input) => `it should also transform id in url to css-modules with(out) quotes ${input}`
   const id = 'a'
   const expectedId = generate(id, PATH)
@@ -57,6 +57,15 @@ test('it should transform id to css-modules', t => {
   quotes.forEach(quote => {
     const source = `<svg><defs><style>path{clip-path:url(${quote}#${id}${quote});}</style></defs><path/></svg>`
     const expected = `<svg><defs><style>path{clip-path:url(${quote}#${expectedId}${quote});}</style></defs><path/></svg>`
-    test(macro, source, expected)
+    test.cb(macro, source, expected)
   })
 }
+
+test.cb('it should transform id in "xlink:href"', t => {
+  const id = 'a'
+  const expectedId = generate(id, PATH)
+  const source = `<svg><g id="${id}"><use xlink:href="#${id}"/></g></svg>`
+  const expected = `<svg><g id="${expectedId}"><use xlink:href="#${expectedId}"/></g></svg>`
+
+  callTest(t, source, expected)
+})

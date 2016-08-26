@@ -10,7 +10,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /\.svg$/,
-      loader: 'file?emitFile=false!svg-css-modules'
+      loader: 'file?name=result.svg!svg-css-modules'
     }]
   },
   resolveLoader: {
