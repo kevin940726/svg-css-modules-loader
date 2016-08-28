@@ -27,7 +27,8 @@
     "generic-names": "^1.0.1",
     "postcss": "^5.1.2",
     "postcss-modules": "^0.5.2",
-    "postcss-url": "^5.1.2"
+    "postcss-url": "^5.1.2",
+    "webpack-parse-query": "^1.0.1"
   },
   "devDependencies": {
     "ava": "^0.16.0",

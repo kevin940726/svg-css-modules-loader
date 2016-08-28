@@ -10,18 +10,22 @@ const generate = genericNames('[name]__[local]___[hash:base64:5]', {
 
 const PATH = path.join(__dirname, 'test.svg')
 
-const transform = source => {
+const transform = (source, options) => {
   return new Promise((resolve, reject) => {
-    const module = {
-      resourcePath: PATH,
-      async: () => (err, result) => {
-        if (err) {
-          reject(err)
-        }
+    const module = Object.assign(
+      {},
+      {
+        resourcePath: PATH,
+        async: () => (err, result) => {
+          if (err) {
+            reject(err)
+          }
 
-        resolve(result)
-      }
-    }
+          resolve(result)
+        }
+      },
+      options
+    )
 
     svgCSSModules.call(module, source)
   })
@@ -47,7 +51,9 @@ test('it should transform id to css-modules', async t => {
   const source = '<svg><defs><style>#a{fill:none;}</style></defs><path id="a"/></svg>'
   const expected = `<svg><defs><style>#${expectedId}{fill:none;}</style></defs><path id="${expectedId}"/></svg>`
 
-  const result = await transform(source)
+  const result = await transform(source, {
+    query: '?transformId'
+  })
   t.is(result, expected)
 })
 
@@ -61,7 +67,9 @@ test('it should transform id to css-modules', async t => {
     const source = `<svg><defs><style>path{clip-path:url(${quote}#${id}${quote});}</style></defs><path/></svg>`
     const expected = `<svg><defs><style>path{clip-path:url(${quote}#${expectedId}${quote});}</style></defs><path/></svg>`
 
-    const result = await transform(source)
+    const result = await transform(source, {
+      query: '?transformId'
+    })
     test(macro, result, expected)
   })
 }

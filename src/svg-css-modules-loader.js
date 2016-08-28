@@ -5,19 +5,26 @@ var genericNames = require('generic-names')
 var postcss = require('postcss')
 var postcssModules = require('postcss-modules')
 var postcssUrl = require('postcss-url')
+var parseQuery = require('webpack-parse-query')
 
-var generate = genericNames('[name]__[local]___[hash:base64:5]', {
-  context: process.cwd()
-})
+var defaultLocalIndentName = '[name]__[local]___[hash:base64:5]'
 
 module.exports = function (source) {
   this.cacheable && this.cacheable()
   var callback = this.async()
   var path = this.resourcePath
+  var query = parseQuery(this.query)
+
+  var localIdentName = query.localIdentName || defaultLocalIndentName
+  var transformId = query.transformId || false
+
+  var generate = genericNames(localIdentName, {
+    context: process.cwd()
+  })
 
   var postcssModulesProcessor = postcss([
     postcssModules({
-      generateScopedName: '[name]__[local]___[hash:base64:5]',
+      generateScopedName: localIdentName,
       getJSON: function () {}
     })
   ])
@@ -51,9 +58,11 @@ module.exports = function (source) {
   })
 
   // transform id
-  $('*[id]:not(svg)').attr('id', function () {
-    return generate($(this).attr('id'), path)
-  })
+  if (transformId) {
+    $('*[id]:not(svg)').attr('id', function () {
+      return generate($(this).attr('id'), path)
+    })
+  }
 
   postcssModulesProcessor
     .process($('style').text(), { from: path, to: path })
