@@ -31,7 +31,8 @@ module.exports = function (source) {
 
   var postcssUrlProcessor = postcss([
     postcssUrl({
-      url: function (url) {
+      url: function (assets) {
+        var url = assets.url
         var regex = /^#(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)$/g
         var match = regex.exec(url)
         if (match && match.length) {
