@@ -83,3 +83,15 @@ test.failing('it should transform id in "xlink:href"', async t => {
   const result = await transform(source)
   t.is(result, expected)
 })
+
+test('it should transform id to css-modules in url attributes', async t => {
+  const id = 'a'
+  const expectedId = generate(id, PATH)
+  const source = `<svg><defs><linearGradient id="${id}"/></defs><path stroke="url(#${id})"/></svg>`
+  const expected = `<svg><defs><linearGradient id="${expectedId}"/></defs><path stroke="url(#${expectedId})"/></svg>`
+
+  const result = await transform(source, {
+    query: '?transformId'
+  })
+  t.is(result, expected)
+})

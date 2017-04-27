@@ -4,7 +4,6 @@ var cheerio = require('cheerio')
 var genericNames = require('generic-names')
 var postcss = require('postcss')
 var postcssModules = require('postcss-modules')
-var postcssUrl = require('postcss-url')
 var loaderUtils = require('loader-utils')
 
 var defaultLocalIndentName = '[name]__[local]___[hash:base64:5]'
@@ -29,20 +28,6 @@ module.exports = function (source) {
     })
   ])
 
-  var postcssUrlProcessor = postcss([
-    postcssUrl({
-      url: function (assets) {
-        var url = assets.url
-        var regex = /^#(-?[_a-zA-Z]+[_a-zA-Z0-9-]*)$/g
-        var match = regex.exec(url)
-        if (match && match.length) {
-          return '#' + generate(match[1], path)
-        }
-        return url
-      }
-    })
-  ])
-
   var $ = cheerio.load(source, {
     xmlMode: true,
     lowerCaseAttributeNames: false
@@ -58,22 +43,25 @@ module.exports = function (source) {
       .join(' ')
   })
 
-  // transform id
-  if (transformId) {
-    $('*[id]:not(svg)').attr('id', function () {
-      return generate($(this).attr('id'), path)
-    })
-  }
-
   postcssModulesProcessor
     .process($('style').text(), { from: path, to: path })
     .then(function (result) {
-      return postcssUrlProcessor.process(result.css, { from: path, to: path })
-    })
-    .then(function (result) {
       $('style').text(result.css)
+      var result = $.xml()
 
-      callback(null, $.xml())
+      // transform id
+      if (transformId) {
+        $('*[id]:not(svg)').attr('id', function () {
+          return generate($(this).attr('id'), path)
+        })
+
+        var urlIDRegex = /url\((['"]?)#([\w-_]+)\1\)/g
+        result = $.xml().replace(urlIDRegex, function (match, p1, p2) {
+          return 'url(' + p1 + '#' + generate(p2, path) + p1 + ')'
+        })
+      }
+
+      callback(null, result)
     })
     .catch(function (err) {
       callback(err)
