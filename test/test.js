@@ -74,13 +74,15 @@ test('it should transform id to css-modules', async t => {
   })
 }
 
-test.failing('it should transform id in "xlink:href"', async t => {
+test('it should transform id in "xlink:href"', async t => {
   const id = 'a'
   const expectedId = generate(id, PATH)
   const source = `<svg><g id="${id}"><use xlink:href="#${id}"/></g></svg>`
   const expected = `<svg><g id="${expectedId}"><use xlink:href="#${expectedId}"/></g></svg>`
 
-  const result = await transform(source)
+  const result = await transform(source, {
+    query: '?transformId'
+  })
   t.is(result, expected)
 })
 
