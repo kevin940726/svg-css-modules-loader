@@ -47,7 +47,7 @@ module.exports = function (source) {
     .process($('style').text(), { from: path, to: path })
     .then(function (result) {
       $('style').text(result.css)
-      var result = $.xml()
+      var xml = $.xml()
 
       // transform id
       if (transformId) {
@@ -55,22 +55,22 @@ module.exports = function (source) {
         $('*[id]:not(svg)').attr('id', function () {
           return generate($(this).attr('id'), path)
         })
-        result = $.xml()
+        xml = $.xml()
 
         // url value, e.g. `url(#id)`
         var urlIDRegex = /url\((['"]?)#([\w-_]+)\1\)/g
-        result = result.replace(urlIDRegex, function (match, p1, p2) {
+        xml = xml.replace(urlIDRegex, function (match, p1, p2) {
           return 'url(' + p1 + '#' + generate(p2, path) + p1 + ')'
         })
 
         // xlink attribute, e.g. `xlink:href="#id"`
         var xlinkRegex = /xlink:href=(['"])#([\w-_]+)\1/g
-        result = result.replace(xlinkRegex, function (match, p1, p2) {
+        xml = xml.replace(xlinkRegex, function (match, p1, p2) {
           return 'xlink:href=' + p1 + '#' + generate(p2, path) + p1
         })
       }
 
-      callback(null, result)
+      callback(null, xml)
     })
     .catch(function (err) {
       callback(err)
