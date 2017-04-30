@@ -13,40 +13,43 @@ Inline svg is awesome, it let you control your svg with css on the fly. Using a 
 /* from ... */
 /* file.svg */
 <svg>
-	<defs><style>
-	.class {
-		fill: #fff;
-	}
-	</style></defs>
-	<path class="class" />
+  <defs><style>
+  .class {
+    fill: #fff;
+  }
+  </style></defs>
+  <path class="class" />
 </svg>
 
 /* ... to */
 <svg>
-	<defs><style>
-	.file__class___DhpID {
-		fill: #fff;
-	}
-	</style></defs>
-	<path class="file__class___DhpID" />
+  <defs><style>
+  .file__class___DhpID {
+    fill: #fff;
+  }
+  </style></defs>
+  <path class="file__class___DhpID" />
 </svg>
 ```
 
 ## Installation
 ```bash
+$ yarn add -D svg-css-modules-loader
 $ npm install --save-dev svg-css-modules-loader
 ```
 
 ## Usage
+(webpack 1)
+
 Load the loader before the [svg-react-loader](https://github.com/jhamlet/svg-react-loader) or other loader like below.
 ```js
 loaders: [
-	//... other loaders
-	{
-		test: /\.svg$/,
-		loader: 'svg-react!svg-css-modules'
-	},
-	//... other loaders
+  //... other loaders
+  {
+    test: /\.svg$/,
+    loader: 'svg-react!svg-css-modules?transformId'
+  },
+  //... other loaders
 ]
 ```
 
@@ -56,5 +59,20 @@ It's also highly recommended to include [svgo](https://github.com/svg/svgo) in y
 loader: 'svg-react!svgo!svg-css-modules'
 ```
 
+## Options
+
+#### `localIdentName`: string
+
+What indent name should loader transform to, more info [here](https://github.com/webpack/loader-utils#interpolatename). Default to `[name]__[local]___[hash:base64:5]`.
+
+#### `transformId`: boolean
+
+Whether to enable id transformation. default to false.
+
+## Author
+
+Kai Hao
+
 ## License
+
 MIT
